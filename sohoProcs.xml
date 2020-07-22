@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?><Processes>
+<Group Level="0">
+<Program Name="OnReboot" Path="sh">
+	<Args>/etc/OnReboot</Args>
+	<SysOption InitOnly="1" NoErrors="1"/>
+</Program>
+<Program Name="RmReboot" Path="rm">
+	<Args>/etc/OnReboot</Args>
+	<SysOption DelayStart="3" InitOnly="1" NoErrors="1"/>
+</Program>
+<Program Name="dbus-setup" Path="sh">
+	<Args>/usr/local/dbus/bin/dbus-setup</Args>
+	<SysOption InitOnly="1" NoErrors="1"/>
+</Program>
+<Program Name="dbus-daemon" Path="/usr/bin/dbus-daemon">
+	<Args>--nofork</Args>
+	<Args>--system</Args>
+	<SysOption Restart="-1"/>
+</Program>
+</Group>
+
+<Group Level="1">
+<Program Name="eventd" Path="/usr/local/eventd/eventd">
+    <SysOption MaxMem="96M" Restart="-1"/>
+</Program>
+<Program Name="init-opt.sh" Path="/mnt/pools/A/A0/init-opt.sh">
+<SysOption Restart="-1"/>
+</Program>
+</Group>
+
+<Group Level="2">
+<Program Name="Hostnamed" Path="sh">
+	<Args>/etc/init.d/hostnamed</Args>
+	<SysOption InitOnly="1" NoErrors="1"/>
+</Program>
+<Program Name="pkgd" Path="/usr/local/pkgd/pkgd">
+	<SysOption MaxMem="96M" Restart="-1"/>
+</Program>
+<Program Name="sohocert" Path="/usr/bin/sohocert">
+	<SysOption InitOnly="1"/>
+</Program>
+<Program Name="upnpdiscovery" Path="/usr/sbin/upnpdiscovery">
+	<SysOption MaxMem="36M" Restart="-1"/>
+</Program>
+<Program Name="displayd" Path="/usr/local/displayd/displayd">
+	<SysOption MaxMem="96M" Restart="-1"/>
+</Program>
+<Program Name="apcupsd" Path="/sbin/apcupsd">
+	<Args>-b</Args>
+</Program>
+<Program Name="mdnsd" Path="/usr/sbin/mdnsd">
+	<Args>-debug</Args>
+	<SysOption MaxMem="12M" Restart="-1"/>
+</Program>
+<Program Disable="1" Name="cupsd" Path="/usr/sbin/cupsd">
+	<Args>-f</Args>
+	<SysOption MaxMem="32M" Restart="-1"/>
+</Program>
+<Program Disable="1" Name="smbd" Path="/usr/local/samba/sbin/smbd">
+	<Args>-F</Args>
+	<SysOption CpuAffinity="2" MaxMem="32M" Nice="10" Restart="-1"/>
+</Program>
+<Program Disable="1" Name="nmbd" Path="/usr/local/samba/sbin/nmbd">
+	<Args>-F</Args>
+	<SysOption MaxMem="20M" Restart="-1"/>
+</Program>
+<Program Disable="1" Name="winbindd" Path="/usr/local/samba/sbin/winbindd">
+    <Args>-F</Args>
+    <SysOption MaxMem="256M" Restart="-1"/>
+</Program>
+<Program Disable="1" Name="snmpd" Path="/usr/sbin/snmpd">
+	<Args>-f -C -c /etc/snmp/snmpd.conf</Args>
+	<SysOption MaxMem="32M" Restart="-1"/>
+</Program>
+<Program Disable="1" Name="mt-daapd" Path="/usr/local/mt-daapd/bin/mt-daapd">
+	<Args>-f -m -c /mnt/system/media/daap.conf</Args>
+	<SysOption MaxMem="64M" Restart="-1"/>
+</Program>
+<Program Disable="1" Name="twonkymedia" Path="/usr/local/twonky/twonkystart.sh">
+	<SysOption Restart="-1"/>
+</Program>
+<Program Disable="1" Name="mediatomb" Path="/usr/bin/mediatomb">
+	<Args>-c /mnt/system/media/mediatomb.xml</Args>
+	<SysOption MaxMem="64M" Restart="-1"/>
+</Program>
+<Program Disable="1" Name="sshd" Path="/usr/sbin/sshd">
+	<SysOption MaxMem="20M" Restart="-1"/>
+</Program>
+<Program Disable="0" Name="svcd" Path="/usr/local/svcd/svcd">
+	<SysOption MaxMem="96M" Restart="-1"/>
+</Program>
+<Program Disable="1" Name="proftpd" Path="/usr/local/proftpd/sbin/proftpd">
+	<Args>-n -q -c /mnt/system/config/proftpd.conf</Args>
+	<SysOption MaxMem="32M" Restart="-1"/>
+</Program>
+<Program Disable="1" Name="IETD" Path="/usr/sbin/ietd">
+	<Args>-f</Args>
+	<Args>-c /mnt/system/config/ietd.conf</Args>
+	<SysOption MaxMem="32M" Restart="-1"/>
+</Program>
+<Program Disable="1" Name="SCST" Path="/usr/sbin/iscsi-scstd">
+	<Args>-f</Args>
+	<SysOption MaxMem="32M" Restart="-1"/>
+</Program>
+<Program Disable="1" Name="isns" Path="/usr/sbin/isnsd">
+	<Args>-f</Args>
+	<SysOption MaxMem="32M" Restart="-1"/>
+</Program>
+<Program Name="crond" Path="/usr/sbin/cron">
+	<Args>-f</Args>
+	<SysOption MaxMem="32M" Restart="-1"/>
+</Program>
+<Program Disable="1" Name="postfix" Path="/usr/sbin/postfix">
+	<Args>-c /usr/local/postfix</Args>
+	<Args>start</Args>
+</Program>
+<Program Name="acpid" Path="/usr/sbin/acpid">
+	<Args>-c /usr/local/acpi/events</Args>
+	<Args>-f</Args>
+</Program>
+<Program Disable="1" Name="logrotation" Path="/usr/bin/logrotation">
+	<SysOption MaxMem="32M" Restart="-1"/>
+</Program>
+<Program Disable="1" Name="bluetoothd" Path="/usr/sbin/bluetoothd">
+	<Args>-n</Args>
+	<SysOption MaxMem="32M" Restart="-1"/>
+</Program>
+<Program Disable="1" Name="sobexsrv" Path="/usr/bin/sobexsrv">
+	<SysOption MaxMem="32M" Restart="-1"/>
+</Program>
+<Program Disable="1" Name="bluetooth-agent" Path="/usr/bin/bluetooth-agent">
+	<SysOption MaxMem="32M" Restart="-1"/>
+</Program>
+<Program Name="appsdownload" Path="/usr/bin/appsdownload">
+	<SysOption Days="2" RandomDelay="1440" Scheduled="1"/>
+</Program>
+<Program Name="autoupg" Path="/usr/bin/autoupg">
+	<SysOption Days="2" RandomDelay="1440" Scheduled="1"/>
+</Program>
+<Program Name="upgsched" Path="/usr/bin/autoupg">
+	<Args>-s</Args>
+	<SysOption Days="1" Scheduled="1" StartTime="04:00"/>
+</Program>
+<Program Name="certchk" Path="/usr/bin/sohocert">
+	<SysOption Days="30" Scheduled="1"/>
+</Program>
+<Program Name="raidchk" Path="/bin/sh">
+	<Args>/usr/bin/raidcheck</Args>
+	<SysOption Days="31" Scheduled="1" StartTime="02:00"/>
+</Program>
+<Program Disable="1" Name="afpd" Path="/usr/sbin/netatalk">
+	<Args>-d -F /mnt/system/config/netatalk/afp.conf</Args>
+	<SysOption MaxMem="32M" Restart="-1"/>
+</Program>
+<Program Name="imgd" Path="/usr/local/imgd/imgd">
+	<SysOption MaxMem="150M" Restart="-1"/>
+</Program>
+<Program Name="lld2d_launch" Path="/bin/sh">
+	<Args>/usr/local/winRally/lld2d_launch.sh</Args>
+	<SysOption InitOnly="1" NoErrors="1"/>
+</Program>
+<Program Disable="1" Name="rsync" Path="/usr/bin/rsync">
+	<Args>--daemon</Args>
+	<Args>--no-detach</Args>
+	<Args>--config=/mnt/system/config/rsyncd.conf</Args>
+	<SysOption MaxMem="96M" Nice="7" Restart="-1"/>
+</Program>
+<Program Name="chkvardiff" Path="/bin/sh">
+	<Args>/usr/bin/chkvardiff.sh</Args>
+	<SysOption MaxMem="32M" Restart="-1"/>
+</Program>
+<Program Name="sohoAudit" Path="/bin/sh">
+	<Args>/usr/bin/sohoAudit</Args>
+	<SysOption MaxMem="96M" Restart="-1"/>
+</Program>
+<Program Name="cp-httpd-convert" Path="/usr/local/cp-utils/cp-httpd-convert">
+	<SysOption InitOnly="1" NoErrors="1"/>
+</Program>
+<Program Name="apache" Path="/usr/local/apache/bin/httpd">
+	<Args>-D NO_DETACH</Args>
+	<Args>-f /ram/httpd.conf</Args>
+	<Args>-k start</Args>
+	<SysOption MaxMem="20M" Restart="-1"/>
+</Program>
+<Program Disable="1" Name="protomgrd" Path="/usr/local/protomgrd/protomgrd">
+	<SysOption MaxMem="96M"/>
+</Program>
+<Program Disable="1" Name="atftpd" Path="/usr/sbin/atftpd">
+	<SysOption MaxMem="32M" Restart="-1"/>
+</Program>
+<Program Name="pcloudd" Path="/usr/local/pcloudd/pcloudd">
+	<SysOption MaxMem="20M" Restart="-1"/>
+</Program>
+<Program Name="activefolder" Path="/usr/local/activefolder/activefolder">
+	<SysOption MaxMem="50M" Restart="-1"/>
+</Program>
+</Group>
+
+<Group Level="3">
+	<Program Disable="1" Name="datamover" Path="/usr/local/datamover/datamover">
+		<SysOption MaxMem="96M" Restart="-1"/>
+	</Program>
+	<Program Name="connectd" Path="/usr/local/connectd/connectd">
+		<SysOption MaxMem="96M" Restart="-1"/>
+	</Program>
+	<Program Name="quiktransfer" Path="/usr/local/quiktransfer/quiktransfer">
+		<SysOption MaxMem="96M" Restart="-1"/>
+	</Program>
+    	<Program Name="amazon" Path="/usr/local/amazon/amazon">
+		<SysOption MaxMem="96M" Restart="-1"/>
+	</Program>
+</Group>
+
+<Group Level="4">
+</Group>
+</Processes>
