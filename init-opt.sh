@@ -17,7 +17,7 @@ OPTDRV=HDD; UUID="0"
 [ "$OPTDRV" = "HDD" ] && { OPT="/mnt/pools/A/A0/opt"; mkdir -p "$OPT"; }
 PROFILE="/opt/etc/profile"
 v_gt() { [ "$(echo -e "$1\n$2" | sort -V | head -n 1)" != "$1" ] && echo "1"; }
-log() { echo "$(date) : $1" >>"$OPT/init-opt.log"; }
+log() { echo "$(date) : $1" >>"$OPT/boot.log"; }
 log "$OPTDRV set as Optware source at $OPT."
 
 # Setup folders and mounts
