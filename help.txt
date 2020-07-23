@@ -1,0 +1,91 @@
+Notes:
+Just installing the firmware and unbricking your device might be all you want but the ix4-300d is capable of being so much more.
+It doesn't take too much to get things like transmission or syncthing installed.
+If you are here because your unit is bricked then read carefully until you get to the further reading paragraph.
+Prebuilt usb recovery firmwares can be downloaded from https://mega.nz/#F!b9N2XQzZ!hdhSgCK0VQlPbYpyOXTmYA
+
+Disclaimer:
+If you know what you are doing and are fully aware of the risks involved then proceed to the next paragraph.
+Be prepared to lose all data on the drives. Not a great scenario but at least your unit will be working again.
+I'm assuming that you have some basic knowledge of using a linux environment.
+Tested on IX4-300D only but should/might work on others, possibly with a minor tweak.
+When I say this, I don't mean that it will make a firmware for this model will work on another machine.
+I'm saying the script should process a downloaded firmware from the lenovo site made for your NAS if it is similar to the ix4-300d ie a Lenovo EMC device.
+Know your limits. If you don't understand what you are doing and can't glean a general idea from this guide then don't do it OK?
+I want to help you to get the thing working but the only help you are going to get from me is from what is written here.
+Moving on.
+
+recovery_tool.sh
+The recovery_tool.sh script will take a Lenovo NAS firmware designed to be processed by the NAS webUI, unencypt it, and generate a USB imaging/recovery firmware.
+This needs to be run in a linux environment either as root or via sudo.
+WSL, cygwin or even a rooted android device running termux terminal with root and busybox should also work.
+Look at the script first. It is reasonably commented with what is happening.
+There are a couple of lines commented out that are optional that you can uncomment. eg just do the upgrade and don't wipe my drive(s).
+When you are happy, make a folder, put the script and downloaded STOCK firmware in it and run the script as root or via sudo (uses mount command).
+Search google for http://download.lenovo.com/nas/lifeline/ if you don't already have a firmware available for your device.
+Prebuilt usb images using this method can be downloaded from https://mega.nz/#F!b9N2XQzZ!hdhSgCK0VQlPbYpyOXTmYA if you don't want to or can't do it yourself.
+Extract the resulting zip archive to the root of a FAT32 or EXT2 formatted USB stick. Don't be silly and use windows exFAT, vFAT or NTFS, it's a waste of time.
+You should end up with 2 folders in the root of the USB stick named 'images' and 'emctools' each with files/folders within them.
+
+Important:
+If the file /usb_drive/emctools/h4c_images/noreinstall exists, then in theory it you should retain your drive data.
+Uncomment the option in the script or just use the 'touch /usb_drive/emctools/h4c_images/noreinstall' command.
+Verify the file exists before proceeding. (h4c_images folder is for ix4-300d. Use different folder name for other models).
+
+The script /usb_drive/emctools/h4c_images/preimage.sh will run before the update if it exsists. Can't think of any real use here though.
+Not all USB sticks are recognised in recovery mode so try using another if no luck. 4gb/8gb sticks are best but again, it might not be recognised.
+The recovery process unpacks the image to the USB drive temporarily so you need enough free space for this so 2gb might be pushing it (/usb_drive/emctools/h4c_images/temp).
+If the file /usb_drive/emctools/h4c_images/noextraction exists, then the temporary unpacked image folder will remain on the stick after the update.
+SDK apps in the /usb_drive/emctools/h4c_images/SDKApps folder will also be installed during the update. 
+Make sure you have the USB stick in the correct port (top rear for IX4-300d google other device).
+Insert USB stick into NAS, hold reset button in, plug in power lead and keep reset button pressed for 5 seconds before releasing.
+
+TFTP.
+If you cannot get USB working, TFTP boot recovery is slower but functional. Only one ethernet port works (eth0), can't remember if top or bottom though.
+Setup a basic TFTP server with static ip address 10.4.50.5/255.255.255.0. NAS ip is 10.4.50.165/255/255/255/0 by default. Copy zImage and initrd from images folder to the
+TFTP root folder along with the extracted contents of the zip file (like USB stick).
+Recovery takes about 10 minutes (longer for TFTP). Be patient and wait for the unit to reboot!
+The first boot will take some time too, 15 minutes if I recall but this was a complete wipe.
+If you use ssh access (ssh root@nasipaddr), the root password will be the password you created prefixed with 'sohoadmin' eg 'sohoadminpassword'.
+Once logged in you can change it with the 'passwd' command.
+Enable ssh by going to http://yourlenovoipaddress/manage/diagnostics.html
+
+Don't buy lenovo again. If you are reading this, you probably already know.
+Lenovo stuff will break in the end, and support will fob you off more than an ISP call center (Typical support ticket: "We will look into it, closed......Nothing").
+
+Further reading.
+OK so you got it working, you can either just use it for file storage or get it to do more.
+In order to do this you need to get the machine running some scripts during boot.
+I am now going to briefly explain what the ones on this repo do.
+
+sohoProcs.xml (/usr/local/cfg/sohoProcs.xml)
+The file has been modified to run /mnt/pools/A/A0/init-opt.sh script at boot time.
+Overwriting the existing one is a bit of a pain (google it) but the h4c-4.1.414.34909-usb-recovery.zip firmware from https://mega.nz/#F!b9N2XQzZ!hdhSgCK0VQlPbYpyOXTmYA
+contains the mod already and is the only addition to the stock firmware.
+
+init-opt.sh (/mnt/pools/A/A0/init-opt.sh)
+This file should run at every boot and is where the magic is.
+It checks various things and will setup/fix as necessary such as optware and ssh login scripts.
+It needs to be run at least once but until it is setup to run automatically at boot, you should run it manually after each reboot which is rarely anyways.
+It is stll under development so don't mess with it as it will eventually auto update.
+See the to-do file on my github https://github.com/5p0ng3b0b/ix4-300d
+
+init-user.sh (/mnt/pools/A/A0/init-user.sh
+This is where you place your custom boot stuff.
+init-opt.sh will call this script once it is safe to do so if it exsists and it is optional.
+
+profile (/opt/etc/profile)
+This file works alongside init-opt.sh providing functions, paths and variables setup.
+It will automatically install when init-opt.sh is run, but a copy is on the repo for you to examine.
+
+The terminal/package environment ipkg (Optware-ng).
+A basic out of date opkg exists on the system already. Don't us it as it will fill up the limited storage available very quickly.
+If you have run init-opt.sh at least once, then the ipkg command with repo will be installed.
+Packages are installed using the ipkg command (eg ipkg update, ipkg install optware-devel). It's like apt but everything is set to install in the /opt folder instead of /.
+With embedded devices, storage is limited and /bin, /usr/bin etc are read only.
+The /opt folder storage space is also limited on the NAS so all subfolders are symlinked to /mnt/pools/A/A0/opt/. This is all taken care of when the init-opt.sh script is run.
+When you login via ssh, the home folder is mapped to /opt/home/ which is in turn just a symlink to /mnt/pools/A/A0/opt/home for example. 
+See http://ipkg.nslu2-linux.org/optware-ng/buildroot-armeabi-ng/Packages.html for available optware packages ot type 'ipkg list'.
+
+Well that's all for now, the rest you can google.
+Have fun!
