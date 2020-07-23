@@ -87,27 +87,3 @@ echo "|  Have a nice day :)                              |"
 echo '|__________________________________________________|'
 
 exit
-
-# Notes:
-# This is all I have to say on the subject so far.
-# This script will take a Lenovo NAS firmware (tested on IX4-300D), unencypt it, and convert it to a USB imaging/recovery update.
-# Extract the resulting zip archive to the root of a FAT32 or EXT2 formatted USB stick. Do not use windows exFAT or vFAT format.
-# You should have 2 folders in the root of the stick named 'images' and 'emctools' with files/folders within them.
-# If the file /usb_drive/emctools/h4c_images/noreinstall exists, then in theory you should retain your drive data (h4c_images folder name may vary by device model).
-# The file /usb_drive/emctools/h4c_images/preimage.sh will run before the update if it exsists.
-# Not all USB sticks are recognised in recovery mode so try using another if no luck. 4gb/8gb sticks are best but again, it might not be recognised.
-# The recovery process unpacks the image to the USB drive temporarily so you need enough free space for this so 2gb might be pushing it (/usb_drive/emctools/h4c_images/temp).
-# If the file /usb_drive/emctools/h4c_images/noextraction exists, then the temporary unpacked image folder will remain.
-# SDK apps in the /usb_drive/emctools/h4c_images/SDKApps will also be installed if they still exsist.
-# Make sure you have the USB stick in the correct port (top rear for IX4-300d google your device).
-# Insert USB stick into NAS, hold reset button in, plug in power lead and keep reset button pressed for 5 seconds before releasing.
-# If you cannot get USB working, TFTP boot recovery is slower but works. Only one ethernet port works (eth0), can't remember which though.
-# Setup a basic TFTP server with static ip address 10.4.50.5. Copy zImage and initrd to the root along with the extracted contents of the zip file (like USB stick).
-# Recovery takes about 10 minutes (longer for TFTP). Be patient and wait for the unit to reboot!
-# The first boot will take some time too, 20 minutes if I recall but this was a complete wipe.
-# You will likely lose all data on the drives. Not great but at least your unit will be working again.
-# If you use ssh access, the root password will be the password you created prefixed with 'sohoadmin'.
-# Enable ssh by going to http://yourlenovoipaddress/manage/diagnostics.html
-# Search google for http://download.lenovo.com/nas/lifeline/ if you don't already have a firmware for your device.
-# Don't buy lenovo again. If you are reading this, you probably already know.
-# Lenovo stuff will break in the end, and support will fob you off more than an ISP call center (Typical support ticket: "We will look into it, closed......Nothing").
