@@ -60,10 +60,10 @@ cp extracted/zImage usb/images
 mkdir -p "usb/emctools/"$FW_CODE"_images"
 
 # Uncomment to preserve drive data. Hard men don't do backups but they cry alot.
-#touch "emctools/"$FW_CODE"_images/noreinstall"
+#touch "usb/emctools/"$FW_CODE"_images/noreinstall"
 
 # Uncomment to preserve temp folder.
-#touch "emctools/"$FW_CODE"_images/noextraction"
+#touch "usb/emctools/"$FW_CODE"_images/noextraction"
 
 cd extracted
 tar czvf "../usb/emctools/"$FW_CODE"_images/${FW_ENC%.tgz}_imager.tgz" * > /dev/null
