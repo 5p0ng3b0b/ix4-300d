@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # Lenovo EMC USB recovery firmware image maker.
 # Finally had time to write this. Might come in handy now support for these products has ended. Did support ever really begin?
 # Make a folder and put this script in it along with your firmware image downloaded from lenovo and run. Good luck!
