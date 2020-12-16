@@ -10,6 +10,10 @@ echo ' __________________________________________________'
 echo "|   Lenovo EMC USB recovery firmware image maker   |"
 echo '|__________________________________________________|'
 pause(){ read -n 1 -s -r -p "    Press any key to continue."; echo; }
+ask()  { #Ask y/n with prompt
+       local prompt default reply; if [ "${2:-}" = "Y" ]; then prompt="Y/n"; default=Y; elif [ "${2:-}" = "N" ]; then prompt="y/N"; default=N; else prompt="y/n"; default=; fi
+       while true; do echo -n "$1 [$prompt] "; read reply </dev/tty; if [ -z "$reply" ]; then reply=$default; fi; case "$reply" in Y*|y*) return 0 ;; N*|n*) return 1 ;; esac; done; }
+
 # FW_ENC=filename of downloaded encrypted firmware
 FW_ENC=$(ls *.tgz)
 # Decrypt firmware
@@ -59,11 +63,10 @@ cp extracted/initrd usb/images
 cp extracted/zImage usb/images
 mkdir -p "usb/emctools/"$FW_CODE"_images"
 
-# Uncomment to preserve drive data. Hard men don't do backups but they cry alot.
-#touch "usb/emctools/"$FW_CODE"_images/noreinstall"
-
-# Uncomment to preserve temp folder.
-#touch "usb/emctools/"$FW_CODE"_images/noextraction"
+# Ask to preserve device settings
+if ask "Do you wish to preserve existing device settings?" N; then touch "usb/emctools/"$FW_CODE"_images/noreinstall"; fi
+# Ask to preserve temp install folder
+if ask "Do you wish to keep temp folder?" N; then touch "usb/emctools/"$FW_CODE"_images/noextraction"; fi
 
 cd extracted
 tar czvf "../usb/emctools/"$FW_CODE"_images/${FW_ENC%.tgz}_imager.tgz" * > /dev/null
@@ -85,5 +88,13 @@ echo "|  recovery mode so try another if no luck.        |"
 echo "|  Recovery takes about 10 minutes. Be patient!    |"
 echo "|  Have a nice day :)                              |"
 echo '|__________________________________________________|'
-
+echo '|  If you wish to keep the existing data on your   |'
+echo '|  drives you should remove them before you start. |'
+echo '|  Once the update had completed, the unit will    |'
+echo '|  power down. Press power button to power up and  |'
+echo '|  wait until display says "insert disk" then      |'
+echo '|  press power button and wait for shutdown.       |'
+echo '|  It is now safe to insert internal drives.       |'
+echo '|__________________________________________________|'
 exit
+# 
