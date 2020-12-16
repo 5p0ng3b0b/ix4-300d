@@ -97,4 +97,5 @@ echo '|  press power button and wait for shutdown.       |'
 echo '|  It is now safe to insert internal drives.       |'
 echo '|__________________________________________________|'
 exit
-# 
+# notes moved to help.txt
+# https://github.com/5p0ng3b0b/ix4-300d/blob/master/help.txt
