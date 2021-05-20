@@ -288,14 +288,14 @@ CjwvR3JvdXA+CjwvUHJvY2Vzc2VzPgo=\
 # todo: write routine to re-install if it is reverted to stock after firmware update 
 # Check if this script is set to run at boot.
 # If not, automatically add it to /usr/local/cfg/sohoProcs.xml by restoring it from sohoprocs variable.
-INIT_SCRIPT=$(readlink -f "$0"); # get path and name of this file.
+INIT_SCRIPT=/mnt/pools/A/A0/init-opt.sh # path and name of this file.
 BOOT_FILE="/usr/local/cfg/sohoProcs.xml"
-if [ -z "$(cat $BOOT_FILE | grep INIT_SCRIPT)" ]; then log "init-opt.sh missing from sohoProcs.xml"; fi
+if [ -z "$(cat $BOOT_FILE | grep $INIT_SCRIPT)" ]; then log "init-opt.sh missing from sohoProcs.xml"; fi
 
 # Start the user startup script
 # Put stuff you want to run at boot in /mnt/pools/A/A0/init-user.sh.
 
-[ -f "/mnt/pools/A/A0/user-init.sh" ] && nohup sh init-user.sh >/dev/null 2>&1 &
+[ -f "/mnt/pools/A/A0/init-user.sh" ] && nohup sh /mnt/pools/A/A0/init-user.sh >/dev/null 2>&1 &
 
 # Added for testing this script. Usually, this script runs at boot.
 echo "Type ctrl-c to exit."
